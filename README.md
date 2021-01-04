@@ -7,9 +7,13 @@ then run by using
 `npm start`
 
 # JSON mapping format
+Example:
+`yourdomain.com/very/long/url` will map into `mapping.json` as: 
+`"very/long/url"`<br><br>
+**Make sure to always specify *https* or *https* in the destination url**
 ```json
 {
-  "shortUrl1" : "longUrl1",
-  "shortUrl2" : "longUrl2"
+  "shortUrl1" : "http://longUrl1",
+  "shortUrl2/cool" : "https://longUrl2"
 }
 ```
