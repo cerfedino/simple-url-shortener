@@ -4,7 +4,7 @@ This is a simple url shortener (duh) written in Javascript that gets the URL map
 To install the dependencies, do:
 `npm install`
 then run by using
-`npm start`
+`sudo npm start`
 
 # JSON mapping format
 Example:
@@ -17,3 +17,4 @@ Example:
   "shortUrl2/cool" : "https://longUrl2"
 }
 ```
+The file can be edited on runtime because every 5-minutes the program imports the mapping again
