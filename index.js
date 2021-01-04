@@ -1,7 +1,7 @@
 const express = require('express')
 var fs = require('fs');
 const app = express()
-const port = 80
+const port = 8000
 var mapping = {}
 
 const updateMapping = function(){
