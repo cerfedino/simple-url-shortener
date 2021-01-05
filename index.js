@@ -8,12 +8,13 @@ const updateMapping = function(){
     fs.readFile('mapping.json', 'utf8', function (err, data) {
         if (err) throw err;
         mapping = JSON.parse(data);
+        consoleStatus("",GREEN,"+",`Imported mapping.json`)
     });
 }
 
 updateMapping();
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+    consoleStatus("",GREEN,"+",`Server is running on port ${port}`)
     setInterval(function() {
         updateMapping();
     }, 5 * 60 * 1000)
@@ -22,16 +23,21 @@ app.listen(port, () => {
 app.get('/*', (req, res) => {
     res.set('Cache-Control', 'no-store')
     url = req.url.substr(1);
-    console.log(`[.] Received request url "${url}"`);
+    consoleStatus("",YELLOW,".",`Received request url "${url}"`);
     if (url in mapping){
-        console.log(`\t[+] Found match for "${url}"\n\t Redirecting to ${mapping[url]} ...`);
+        consoleStatus("\t",GREEN,"+",`Found match for "${url}"\n\t\t Redirecting to ${mapping[url]} ...`);
         res.writeHead(301, {'Location' : mapping[url]});
     }else{
-        console.log(`\t[-] Did not find any matches for "${url}"`);
+        consoleStatus("\t",RED,"-",`Did not find any matches for "${url}"`);
     }
 
     res.end();
 })
 
-
+const RED = "\x1b[31m";
+const GREEN = "\x1b[32m"
+const YELLOW = "\x1b[33m";
+const consoleStatus = function(prepend,COLOR,symbol,text){
+    console.log(`${prepend}[${COLOR}${symbol}`+'\x1b[0m]'+` ${text}`);
+}
 
