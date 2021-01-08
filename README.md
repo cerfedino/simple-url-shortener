@@ -1,3 +1,4 @@
+Disclaimer: This is a one-day project therefore its not as refined as it should be
 # Description
 This is a simple url shortener (duh) written in Javascript that gets the URL mappings from the `mapping.json` file
 # Installing and running
