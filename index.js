@@ -7,8 +7,18 @@ var mapping = {}
 const updateMapping = function(){
     fs.readFile('mapping.json', 'utf8', function (err, data) {
         if (err) throw err;
-        mapping = JSON.parse(data);
-        consoleStatus("",GREEN,"+",`Imported mapping.json`)
+
+        json = JSON.parse(data);
+
+        newMapping = {};
+        json.forEach(function(json_map){
+            json_map['shortUrls'].forEach(function (shortUrl){
+                newMapping[shortUrl] = json_map['longUrl'];
+            });
+        });
+        mapping = newMapping;
+
+        consoleStatus("",GREEN,"+",`Imported mapping.json`);
     });
 }
 

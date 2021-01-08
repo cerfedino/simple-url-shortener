@@ -12,9 +12,15 @@ Example:
 `"very/long/url"`<br><br>
 **Make sure to always specify *https* or *https* in the destination url**
 ```json
-{
-  "shortUrl1" : "http://longUrl1",
-  "shortUrl2/cool" : "https://longUrl2"
-}
+[
+  {
+    "shortUrls" : ["git", "github"],
+    "longUrl" : "https://github.com/AlbertCerfeda"
+  },
+  {
+    "shortUrls" : ["gl", "google"],
+    "longUrl" : "https://www.google.com/"
+  }
+]
 ```
 The file can be edited on runtime because every 5-minutes the program imports the mapping again

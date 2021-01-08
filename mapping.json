@@ -1,4 +1,10 @@
-{
-  "github" : "https://github.com/AlbertCerfeda",
-  "git" : "https://github.com/AlbertCerfeda"
-}
+[
+  {
+    "shortUrls" : ["git", "github"],
+    "longUrl" : "https://github.com/AlbertCerfeda"
+  },
+  {
+    "shortUrls" : ["gl", "google"],
+    "longUrl" : "https://www.google.com/"
+  }
+]
