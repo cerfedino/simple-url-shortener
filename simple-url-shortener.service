@@ -1,0 +1,13 @@
+[Unit]
+Description=Simple url shortener (duh) that gets the URL mappings from a local `mapping.json` file
+Documentation=https://github.com/AlbertCerfeda/simple-url-shortener/blob/master/README.md
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory= /home/cerfe/Programs/simple-url-shortener/
+ExecStart=sudo npm start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
