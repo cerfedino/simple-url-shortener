@@ -1,6 +1,6 @@
 Disclaimer: This is a one-day project therefore its not as refined as it should be
 # Description
-This is a simple url shortener (duh) written in Javascript that gets the URL mappings from the `mapping.json` file
+This is a simple url shortener written in Javascript.
 # Installing and running
 To install the dependencies, do:
 `npm install`
