@@ -1,4 +1,3 @@
-Disclaimer: This is a one-day project therefore its not as refined as it should be
 # Description
 This is a simple url shortener written in Javascript.
 # Installing and running
