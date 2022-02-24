@@ -10,7 +10,7 @@ then run by using
 Example:
 `yourdomain.com/very/long/url` will map into `mapping.json` as: 
 `"very/long/url"`<br><br>
-**Make sure to always specify *https* or *https* in the destination url**
+**Make sure to always specify the protocol in the destination url**
 ```json
 [
   {
