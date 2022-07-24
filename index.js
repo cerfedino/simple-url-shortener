@@ -13,6 +13,7 @@ const {logToConsole} = require('./modules/logger.js')('index')
         logToConsole.GREEN(0, "+", `Server is running on port ${port}`);
     });
 
+    // Run requests first through the shortener routes
     app.use(shortener)
 
     // Serve static files

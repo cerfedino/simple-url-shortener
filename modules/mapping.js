@@ -2,9 +2,12 @@ var fs = require('fs');
 const { logToConsole } = require('./logger.js')('mapping');
 const config = require('../config');
 
-
+/**
+ * Imports the URL map, used by the shortening controller.
+ */
 var mapping = {}
 
+// If the database is remote, connects to the MongoDB database with the provided connection string.
 const mongodbClient = config.webserver.remote ? new (require('mongodb').MongoClient)(config.database.mongodb_uri).connect() : undefined;
 
 
@@ -21,6 +24,7 @@ function extract_mapping(json) {
 
 const updateMapping = !config.webserver.remote ?
     () => {
+        // If the db is local, reads the mapping.json file
         fs.readFile('mapping.json', 'utf8', (err, data) => {
             if (err) throw err;
             
@@ -32,6 +36,7 @@ const updateMapping = !config.webserver.remote ?
 
             logToConsole.GREEN(0, "+", `Imported mapping.json`);
         });
+        // If the database is remote, pulls the 'mapping' collection from the mongodb database.
     } : async () => {
             model = {}
             await mongodbClient.then(client => {
