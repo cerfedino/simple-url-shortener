@@ -4,9 +4,10 @@ Documentation=https://github.com/AlbertCerfeda/simple-url-shortener/blob/master/
 After=network.target
 
 [Service]
+User=root
 Type=simple
 WorkingDirectory= /home/cerfe/Programs/simple-url-shortener/
-ExecStart=sudo npm run local
+ExecStart=npm run start
 Restart=on-failure
 
 [Install]
