@@ -1,10 +1,12 @@
+const config = require('./config')
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 80;
+
+const port = config.webserver.port;
 
 const shortener = require('./routes/shortener')
 
-const { logToConsole, logRequest } = require('./modules/logger.js')('index')
+const {logToConsole} = require('./modules/logger.js')('index')
 
 {
     app.listen(port, () => {
