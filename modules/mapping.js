@@ -1,5 +1,5 @@
 var fs = require('fs');
-const { logToConsole, logRequest } = require('./logger.js');
+const { logToConsole, logRequest } = require('./logger.js')('mapping');
 
 const isLocal = (process.argv[2]!="remote")
 var mapping = {}

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mapping = require('../modules/mapping.js')
-const { logToConsole, logRequest } = require('../modules/logger.js');
+const { logToConsole, logRequest } = require('../modules/logger.js')('shortener');
 
 module.exports = router
 

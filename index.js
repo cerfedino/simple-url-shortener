@@ -4,7 +4,7 @@ const port = process.env.PORT || 80;
 
 const shortener = require('./routes/shortener')
 
-const { logToConsole, logRequest } = require('./modules/logger.js')
+const { logToConsole, logRequest } = require('./modules/logger.js')('index')
 
 {
     app.listen(port, () => {
