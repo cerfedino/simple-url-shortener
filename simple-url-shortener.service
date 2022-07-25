@@ -1,5 +1,5 @@
 [Unit]
-Description=Simple url shortener (duh) that gets the URL mappings from a local `mapping.json` file
+Description=Simple url shortener written in Javascript.
 Documentation=https://github.com/AlbertCerfeda/simple-url-shortener/blob/master/README.md
 After=network.target
 
