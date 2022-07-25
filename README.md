@@ -2,6 +2,23 @@
 This is a simple url shortener written in Javascript.\
 Takes the URL mapping either from a local json file or from a mongodb database.
 
+---
+**TOC**
+<!-- TOC -->
+
+- [Description](#description)
+- [Installing and running](#installing-and-running)
+        - [NPM run scripts](#npm-run-scripts)
+- [URL mapping format](#url-mapping-format)
+- [Configuration](#configuration)
+- [Routes](#routes)
+        - [URL shortening middleware](#url-shortening-middleware)
+        - [Serving static files inside of the public folder](#serving-static-files-inside-of-the-public-folder)
+- [IP logging feature](#ip-logging-feature)
+- [systemd service unit file](#systemd-service-unit-file)
+
+<!-- /TOC -->
+---
 
 # Installing and running
 Install the dependencies with
@@ -78,3 +95,11 @@ This controller checks the request URL for matching entries in the URL mapping.
 It is possible to serve static files placed inside the public folder.
 
 The URL shortening middleware has the highest priority over the static file serving.
+
+# IP logging feature
+All the IPs making requests to the shortening service get logged inside the `log.csv`.\
+A friend of mine told me that it is basically spyware :see_no_evil:.\
+I guess until no one complains it is legal.
+
+# systemd service unit file
+I've added a systemd unit file so that I can automatically run the application as a background process when booting my machine.
