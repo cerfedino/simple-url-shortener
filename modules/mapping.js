@@ -41,7 +41,7 @@ const updateMapping = !config.webserver.remote ?
             model = {}
             await mongodbClient.then(client => {
                 model.db = client.db("simple-url-shortener");
-                model["mapping"] = model.db.collection("mapping")
+                model["mapping"] = model.db.collection(config.database.collection)
             });
 
             newMapping = extract_mapping(await (model.mapping.find().toArray()))

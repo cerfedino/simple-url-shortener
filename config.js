@@ -1,9 +1,9 @@
 const isLocal = process.argv[2] !== "remote"
 
 ///////////////////
-// Initializes some settings that depend on whether the application is getting deployed locally or remotely
-const PORT = isLocal ?  80 : process.env.PORT
-const MONGODB_URI = process.env.MONGODB_URI
+// Reads environment variables, or grabs default values.
+const PORT = process.env.PORT || 80
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017'
 
 ///////////////////
 
@@ -14,6 +14,7 @@ const settings = {
     },
 
     mapping: {
+        // How frequently the mapping gets imported. 
         mappingImportDelay: 1000*60*5
     },
 
