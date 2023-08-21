@@ -1,0 +1,41 @@
+version: '3.9'
+name: shortener-dev
+networks:
+  shortener-network:
+    external: false
+
+services:
+  shortener-air:
+    image: cosmtrek/air:v1.44.0
+    working_dir: /project-package
+    # ports:
+    #   - 8080:8080
+    volumes:
+      - ../../:/project-package/
+    networks:
+      - shortener-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: postgres
+    image: postgres:15.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      PGUSER: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s 
+    expose:
+      - 5432
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+    networks:
+      - shortener-network
