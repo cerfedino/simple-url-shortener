@@ -5,13 +5,15 @@ networks:
     external: false
 
 services:
-  shortener-air:
-    image: cosmtrek/air:v1.44.0
-    working_dir: /project-package
-    # ports:
-    #   - 8080:8080
+  shortener-dev:
+    container_name: shortener-dev
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:8080
     volumes:
-      - ../../:/project-package/
+      - ../:/app
     networks:
       - shortener-network
     depends_on:
