@@ -4,10 +4,11 @@ CREATE TABLE long_urls (
 );
 
 CREATE TABLE shortened_urls (
-  short_url VARCHAR,
+  short_url VARCHAR UNIQUE,
   long_url_id INT,
+  private BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY (short_url, long_url_id),
-  FOREIGN KEY (long_url_id) REFERENCES long_urls(id)
+  FOREIGN KEY (long_url_id) REFERENCES long_urls(id) ON DELETE CASCADE
 );
 
 CREATE TABLE log (
