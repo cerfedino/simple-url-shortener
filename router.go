@@ -13,7 +13,7 @@ func Router() *mux.Router {
 	var model Storage = &postgresstorage{}
 	model.init("")
 
-	publicFileServeHandler := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/public")))
+	publicFileServeHandler := http.StripPrefix("/public/", http.FileServer(http.Dir("./static/public")))
 	privateFileServeHandler := http.StripPrefix("/private/", http.FileServer(http.Dir("./static/private")))
 
 	// model.removeShortenedURL("private")
@@ -32,11 +32,11 @@ func Router() *mux.Router {
 
 	// Matcher for both '/' and '/index.html'
 	r.Methods("GET").Path("/{path:index.html|}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/static/index.html", http.StatusFound)
+		http.Redirect(w, r, "/public/index.html", http.StatusFound)
 	})
 
 	// Serve static files
-	r.Methods("GET").PathPrefix("/static/").Handler(publicFileServeHandler)
+	r.Methods("GET").PathPrefix("/public/").Handler(publicFileServeHandler)
 
 	// Shorten URL
 	r.Methods("GET").Path("/{shortURL}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +46,7 @@ func Router() *mux.Router {
 		defer model.logShorteningRequest(r.RemoteAddr, shortURL, longURL)
 		if err != nil {
 			log.Println(err)
-			http.Redirect(w, r, fmt.Sprintf("/static/error.html?e=%d&reqURL=%v", http.StatusNotFound, shortURL), http.StatusFound)
+			http.Redirect(w, r, fmt.Sprintf("/public/error.html?e=%d&reqURL=%v", http.StatusNotFound, shortURL), http.StatusFound)
 			return
 		}
 		// If the URL redirects to the private directory, serve the file
@@ -60,7 +60,7 @@ func Router() *mux.Router {
 
 	// Catch every other request
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, fmt.Sprintf("/static/error.html?e=%d&reqURL=%v", http.StatusNotFound, r.URL), http.StatusFound)
+		http.Redirect(w, r, fmt.Sprintf("/public/error.html?e=%d&reqURL=%v", http.StatusNotFound, r.URL), http.StatusFound)
 	})
 
 	return r

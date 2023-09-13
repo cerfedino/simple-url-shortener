@@ -69,7 +69,7 @@ func (s postgresstorage) getLongerURL(shortenedURL string) (string, error) {
 	return longUrl, err
 }
 
-func (s postgresstorage) storeShortenedURL(longURL string, public bool, shortenedUrls ...string) {
+func (s postgresstorage) storeShortenedURL(longURL string, hidden bool, shortenedUrls ...string) {
 	// Check if long_url already exists and create it otherwise
 	var longUrlId int64
 	fmt.Println("Checking if long_url already exists")
@@ -86,7 +86,7 @@ func (s postgresstorage) storeShortenedURL(longURL string, public bool, shortene
 		fmt.Println("long_url already exists, and is ", longUrlId)
 	}
 	for _, shortUrl := range shortenedUrls {
-		s.db.Exec(fmt.Sprintf("INSERT INTO shortened_urls (short_url, long_url_id, private) VALUES ('%s',%d,'%v')", shortUrl, longUrlId, !public))
+		s.db.Exec(fmt.Sprintf("INSERT INTO shortened_urls (short_url, long_url_id, hidden) VALUES ('%s',%d,'%v')", shortUrl, longUrlId, hidden))
 	}
 }
 
@@ -105,7 +105,7 @@ func (s postgresstorage) removeShortenedURL(shortenedURLs ...string) {
 }
 
 func (s postgresstorage) getAllShortenedURLs(publiconly bool) (map[string][2]string, error) {
-	rows, err := s.db.Query(fmt.Sprintf("SELECT short_url, long_url, private FROM shortened_urls INNER JOIN long_urls ON shortened_urls.long_url_id = long_urls.id%s", If(publiconly, " WHERE private=FALSE", "")))
+	rows, err := s.db.Query(fmt.Sprintf("SELECT short_url, long_url, hidden FROM shortened_urls INNER JOIN long_urls ON shortened_urls.long_url_id = long_urls.id%s", If(publiconly, " WHERE hidden=FALSE", "")))
 	defer rows.Close()
 	if err != nil {
 		return nil, err
@@ -115,12 +115,12 @@ func (s postgresstorage) getAllShortenedURLs(publiconly bool) (map[string][2]str
 	for rows.Next() {
 		var shortURL string
 		var longURL string
-		var private bool
-		err = rows.Scan(&shortURL, &longURL, &private)
+		var hidden bool
+		err = rows.Scan(&shortURL, &longURL, &hidden)
 		if err != nil {
 			return nil, err
 		}
-		shortenedURLs[shortURL] = [2]string{longURL, fmt.Sprintf("%v", private)}
+		shortenedURLs[shortURL] = [2]string{longURL, fmt.Sprintf("%v", hidden)}
 	}
 	return shortenedURLs, nil
 }
