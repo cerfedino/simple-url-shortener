@@ -79,7 +79,6 @@ For example, to access the `Albert.vcf` file inside the `static/private` folder,
   Dumps the mapping in the answer -->
 
 
-
 # IP logging feature
 All the IPs making requests to the shortening service get logged inside the database.\
 A friend of mine told me that it is basically spyware :see_no_evil:.\
