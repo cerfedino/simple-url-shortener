@@ -1,5 +1,5 @@
 # Description
-This is a simple url shortener written in Go.
+This is a simple url shortener written in Go. I needed one, so I made one to fit my needs.
 - The short -> long URL mappings are stored in a PostgreSQL database.
 - Requests are logged into the database.
 - Files inside the `static/` folder can be served to the client.
