@@ -19,11 +19,11 @@ services:
     networks:
       - shortener-network
     depends_on:
-      postgres:
+      postgres-dev:
         condition: service_healthy
 
-  postgres:
-    container_name: postgres
+  postgres-dev:
+    container_name: postgres-dev
     image: postgres:15.4
     restart: unless-stopped
     environment:
