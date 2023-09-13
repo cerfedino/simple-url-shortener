@@ -1,0 +1,47 @@
+version: '3.9'
+name: shortener-dev
+networks:
+  shortener-network:
+    external: false
+
+services:
+  shortener-dev:
+    container_name: shortener-dev
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ../:/app
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - shortener-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: postgres
+    image: postgres:15.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      PGUSER: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgres"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    expose:
+      - 5432
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - shortener-network
