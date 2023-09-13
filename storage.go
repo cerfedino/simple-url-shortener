@@ -20,16 +20,19 @@ func If(condition bool, trueVal any, falseVal any) any {
 }
 
 type Storage interface {
-	init(string)
-	getLongerURL(string) (string, error)
-	storeShortenedURL(string, bool, ...string)
-	removeShortenedURL(...string)
-	getAllShortenedURLs(bool) (map[string][2]string, error)
+	// Initializes the storage model
+	init(dataSourceName string)
+	// Returns the long URL associated with the provided shortened URL
+	getLongerURL(shortenedURL string) (string, error)
+	// Stores the long URL in the database, and maps it to the provided shortened URLs
+	storeShortenedURL(longURL string, hidden bool, shortenedUrls ...string)
+	// Removes the provided shortened URLs from the database
+	removeShortenedURL(shortenedURLs ...string)
+	// Returns all shortened urls in the form of a map of shortURL -> [longURL, hidden]
+	// If publiconly is true, only returns mappings that have 'hidden' set to false
+	getAllShortenedURLs(publiconly bool) (map[string][2]string, error)
 	// Logs a request to shorten a URL.
-	// The first argument is the request object.
-	//
-	// The second argument is the shortened URL. Can be empty.
-	logShorteningRequest(string, string, string)
+	logShorteningRequest(ip, shortURL, longUrl string)
 }
 
 type sqlstorage struct {
@@ -59,13 +62,12 @@ func (s *postgresstorage) init(dataSourceName string) {
 }
 
 func (s postgresstorage) getLongerURL(shortenedURL string) (string, error) {
-	var longUrlId string
-	err := s.db.QueryRow(fmt.Sprintf("SELECT long_url_id FROM shortened_urls WHERE short_url = '%s'", shortenedURL)).Scan(&longUrlId)
-	if err != nil {
-		return longUrlId, err
-	}
 	var longUrl string
-	err = s.db.QueryRow(fmt.Sprintf("SELECT long_url FROM long_urls WHERE id = %s", longUrlId)).Scan(&longUrl)
+	query := `SELECT long_urls.long_url 
+			FROM shortened_urls 
+			INNER JOIN long_urls ON shortened_urls.long_url_id = long_urls.id 
+			WHERE shortened_urls.short_url = ?`
+	err := s.db.QueryRow(query, shortenedURL).Scan(&longUrl)
 	return longUrl, err
 }
 

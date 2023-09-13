@@ -35,26 +35,29 @@ func Router() *mux.Router {
 		http.Redirect(w, r, "/public/index.html", http.StatusFound)
 	})
 
-	// Serve static files
+	// Serve static files in the static/public directory
 	r.Methods("GET").PathPrefix("/public/").Handler(publicFileServeHandler)
 
-	// Shorten URL
+	// Attempt to redirect to a long url
 	r.Methods("GET").Path("/{shortURL}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		shortURL := vars["shortURL"]
+		// Retrieve the long URL from the database
 		longURL, err := model.getLongerURL(shortURL)
 		defer model.logShorteningRequest(r.RemoteAddr, shortURL, longURL)
+		// If the short URL is not found, redirect to the error page
 		if err != nil {
 			log.Println(err)
 			http.Redirect(w, r, fmt.Sprintf("/public/error.html?e=%d&reqURL=%v", http.StatusNotFound, shortURL), http.StatusFound)
 			return
 		}
-		// If the URL redirects to the private directory, serve the file
+		// Instead if the URL redirects to the static/private directory, serve the file
 		if strings.HasPrefix(longURL, "/private/") {
 			r.URL.Path = longURL
 			privateFileServeHandler.ServeHTTP(w, r)
 			return
 		}
+		// Otherwise, redirect to the long URL
 		http.Redirect(w, r, longURL, http.StatusFound)
 	})
 
