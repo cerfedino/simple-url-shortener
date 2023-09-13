@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -42,9 +43,10 @@ func Router() *mux.Router {
 		vars := mux.Vars(r)
 		shortURL := vars["shortURL"]
 		longURL, err := model.getLongerURL(shortURL)
+		defer model.logShorteningRequest(r.RemoteAddr, shortURL, longURL)
 		if err != nil {
 			log.Println(err)
-			http.Redirect(w, r, "/static/error.html?e=404", http.StatusFound)
+			http.Redirect(w, r, fmt.Sprintf("/static/error.html?e=%d&reqURL=%v", http.StatusNotFound, shortURL), http.StatusFound)
 			return
 		}
 		// If the URL redirects to the private directory, serve the file
@@ -58,7 +60,7 @@ func Router() *mux.Router {
 
 	// Catch every other request
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/static/error.html?e=404", http.StatusFound)
+		http.Redirect(w, r, fmt.Sprintf("/static/error.html?e=%d&reqURL=%v", http.StatusNotFound, r.URL), http.StatusFound)
 	})
 
 	return r

@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -30,7 +29,7 @@ type Storage interface {
 	// The first argument is the request object.
 	//
 	// The second argument is the shortened URL. Can be empty.
-	logShorteningRequest(*http.Request, string)
+	logShorteningRequest(string, string, string)
 }
 
 type sqlstorage struct {
@@ -126,6 +125,6 @@ func (s postgresstorage) getAllShortenedURLs(publiconly bool) (map[string][2]str
 	return shortenedURLs, nil
 }
 
-func (s postgresstorage) logShorteningRequest(r *http.Request, shortenedURL string) {
-
+func (s postgresstorage) logShorteningRequest(ip, shortURL, longUrl string) {
+	s.db.Exec(fmt.Sprintf("INSERT INTO log (id, timestamp, ip, success, shortURL, redirectURL) VALUES (DEFAULT, DEFAULT, '%s', %v, '%s', '%s')", ip, longUrl != "", shortURL, longUrl))
 }
