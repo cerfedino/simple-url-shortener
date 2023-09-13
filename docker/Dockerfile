@@ -2,9 +2,9 @@ FROM golang:1.21.0
 
 WORKDIR /app
 
-RUN go install github.com/cosmtrek/air@latest
 
-COPY go.mod go.sum ./
+COPY . .
 RUN go mod download
+RUN go build -o ./bin/shortener .
 
-CMD "air"
+CMD "./bin/shortener"

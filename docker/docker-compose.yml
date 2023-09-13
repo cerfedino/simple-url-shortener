@@ -1,29 +1,29 @@
 version: '3.9'
-name: shortener-dev
+name: shortener-prod
 networks:
   shortener-network:
     external: false
 
 services:
-  shortener-dev:
-    container_name: shortener-dev
+  shortener-prod:
+    container_name: shortener-prod
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
     ports:
       - 8080:8080
     volumes:
-      - ../:/app
+      # - ../:/app
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - shortener-network
     depends_on:
-      postgres:
+      postgres-prod:
         condition: service_healthy
 
-  postgres:
-    container_name: postgres
+  postgres-prod:
+    container_name: postgres-prod
     image: postgres:15.4
     restart: unless-stopped
     environment:
