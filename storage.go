@@ -63,11 +63,10 @@ func (s *postgresstorage) init(dataSourceName string) {
 
 func (s postgresstorage) getLongerURL(shortenedURL string) (string, error) {
 	var longUrl string
-	query := `SELECT long_urls.long_url 
-			FROM shortened_urls 
-			INNER JOIN long_urls ON shortened_urls.long_url_id = long_urls.id 
-			WHERE shortened_urls.short_url = ?`
-	err := s.db.QueryRow(query, shortenedURL).Scan(&longUrl)
+	err := s.db.QueryRow(fmt.Sprintf(`SELECT long_urls.long_url 
+	FROM shortened_urls 
+	INNER JOIN long_urls ON shortened_urls.long_url_id = long_urls.id 
+	WHERE shortened_urls.short_url = '%s'`, shortenedURL)).Scan(&longUrl)
 	return longUrl, err
 }
 
