@@ -5,8 +5,8 @@ networks:
     external: false
 
 services:
-  shortener-dev:
-    container_name: shortener-dev
+  shortener-dev-app:
+    container_name: shortener-dev-app
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
@@ -19,11 +19,11 @@ services:
     networks:
       - shortener-network
     depends_on:
-      postgres-dev:
+      shortener-dev-db:
         condition: service_healthy
 
-  postgres-dev:
-    container_name: postgres-dev
+  shortener-dev-db:
+    container_name: shortener-dev-db
     image: postgres:15.4
     restart: unless-stopped
     environment:

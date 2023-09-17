@@ -43,7 +43,7 @@ type postgresstorage sqlstorage
 
 func (s *postgresstorage) init(dataSourceName string) {
 	if dataSourceName == "" {
-		dataSourceName = "postgres://postgres:postgres@postgres-dev/postgres?sslmode=disable"
+		dataSourceName = "postgres://postgres:postgres@shortener-dev-db/postgres?sslmode=disable"
 	}
 
 	db, _ := sql.Open("postgres", dataSourceName)
