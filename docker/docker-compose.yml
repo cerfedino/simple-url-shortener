@@ -14,6 +14,7 @@ services:
       - 8080:8080
     volumes:
       # - ../:/app
+      - ../config.yaml/:/app/config.yaml
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
