@@ -52,7 +52,7 @@ func Router() *mux.Router {
 	// model.storeShortenedURL("/private/secret.html", false, "private")
 	// fmt.Println(model.getAllShortenedURLs(false))
 
-	r := mux.NewRouter()
+	r := mux.NewRouter().StrictSlash(true)
 
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
